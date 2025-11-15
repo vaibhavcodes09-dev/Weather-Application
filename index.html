@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header>
+      <h1>Weather</h1>
+      <div id="navlinks">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Settings</a>
+      </div>
+    </header>
+
+    <!-- Search Bar -->
+    <form>
+      <div id="searchBar">
+        <input type="search" placeholder="Enter The City Name..." />
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
+    <!-- Main Section -->
+    <main id="mainSection">
+      <div id="cardTitle">
+        <!--Title  -->
+        <h3>Current Weather</h3>
+        <h3 id="displayTime"></h3>
+      </div>
+
+      <!-- Main Card -->
+      <div id="mainCard">
+        <!-- Temperature Display -->
+        <div id="cardTemp">
+          <span id="city"></span>
+          <div id="tempWithIcon">
+          <span id="temp">--</span>
+          <img id="weatherIcon" src="" alt="Weathericon">
+          </div>
+          <span id="weatherDescription"></span>
+          <h2 id="cityerror">Error : City not Found!</h2>
+        </div>
+
+        <!-- Side Panel Containing List -->
+        <div id="sidePanel">
+          <div class="sidePanelList">
+            <span class="label" id="wind">--</span>
+          </div>
+          <div class="sidePanelList">
+            <span class="label" id="realFeel">--</span>
+          </div>
+          <div class="sidePanelList">
+            <span class="label" id="humidity">--</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="forecastContainer"></div>
+
+    
+    <!-- Footer -->
+    <footer>
+      <p>Made With &hearts; By VaibhaV</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,220 @@
+/* Universal */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Body Prefrences */
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: #f0f4f9;
+}
+
+/* Navbar */
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1.5rem;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #ffffff;
+}
+
+#navlinks {
+    align-content: center;
+}
+
+/* Quick Links in Navbar*/
+header a {
+    text-decoration: none;
+    margin: 1rem;
+    color: #fff;
+    display: inline-block;
+    transition: all ease-in 0.2s;
+}
+
+header a:hover {
+    color: #f0f4f9;
+    transform: scale(1.1)
+}
+
+/* Search Bar */
+#searchBar {
+    margin: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+#searchBar input {
+    min-width: 40%;
+    height: 2.5rem;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 4px;
+    font-size: large;
+}
+
+#searchBar button {
+    padding: 0.5rem 1rem;
+    background-color: #007aff;
+    border-radius: 4px;
+    color: #ffffff;
+    border: none;
+}
+
+#searchBar button:hover {
+    background-color: #005fcc;
+    cursor: pointer;
+}
+/* City not Found */
+#cityerror{
+    text-align: center;
+    color: red;
+    font-weight: 400;
+    display: none;
+}
+
+/* Main Section */
+#mainSection {
+    display: flex;
+    align-content: center;
+    border: solid 1px black;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 60%;
+    margin: auto;
+    flex-direction: column;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Title Line */
+#cardTitle {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.5px solid gray;
+    padding: 0.5rem 2rem;
+}
+
+h3 {
+    color: #1e1e1e;
+    font-weight: 250;
+}
+
+/* Part of Card Displaying temp and side list */
+#mainCard {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+
+/* Temperature Display */
+#cardTemp {
+    align-content: center;
+    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#temp {
+    font-size: 4rem;
+    font-weight: 800;
+}
+
+#celsius {
+    font-weight: 50;
+    font-size: 2rem;
+}
+#weatherIcon{
+    height: 4.5rem;
+    width: 4.5rem;
+    display: none;
+}
+#tempWithIcon{
+    display: flex;
+}
+
+/* Side Panel Containing Further Details */
+#sidePanel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
+.sidePanelList {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+
+}
+
+/* Footer */
+footer {
+    background-color: #fafafa;
+    padding: 2rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.forecastContainer {
+  margin-top: 2rem;  
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.forecastCard {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 120px;
+  transition: all 0.3s ease;
+}
+
+.forecastCard:hover {
+  transform: scale(1.05);
+  background: #f0f4ff;
+}
+
+
+/* Responsiveness */
+@media(max-width:600px) {
+    #mainCard {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #navlinks {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #navlinks a {
+        margin: 0.2rem;
+    }
+
+    h3 {
+        font-size: 0.7rem;
+    }
+    .forecastContainer{
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+    }
+    #mainCard{
+        padding: 0.5rem 0.5rem;
+    }
+    #tempWithIcon{
+        padding-right: 2rem;
+    }
+    #cardTemp{
+        padding-bottom: 1rem;
+    }
+}
