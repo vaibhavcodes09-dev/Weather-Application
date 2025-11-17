@@ -1,7 +1,7 @@
-// Nodes Selection
+// Node Selections
 const timeDisplay = document.querySelector("#displayTime");
-const form = document.querySelector("form");
-const userSearch = document.querySelector("input");
+const form = document.querySelector("#searchForm");
+const userSearch = document.querySelector("#searchInput");
 const temperature = document.querySelector("#temp");
 const windDisplay = document.querySelector("#wind");
 const realFeelDisplay = document.querySelector("#realFeel");
@@ -12,105 +12,85 @@ const weatherIcon = document.querySelector("#weatherIcon");
 const weatherDescription = document.querySelector("#weatherDescription");
 const forecastContainer = document.querySelector(".forecastContainer");
 
-// Fetching Weather/API Call
+// Fetch Weather From Backend (SECURED KEY)
 async function fetchWeather(city) {
-  const API_key = "dc05ba167267cff2ad7f80b7367e285f";
-  const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_key}&units=metric`;
   try {
-    let response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error("City not Found / Error Loading");
+    const res = await fetch(`/api/weather?city=${city}`);
+    const data = await res.json();
+
+    if (data.cod == "404") {
+      showError();
+      return;
     }
-    let data = await response.json();
-    errorCity.style.display = "none";
-    // Updating DOM
-    temperature.textContent = Math.round(data.list[0].main.temp) + "°C";
-    windDisplay.textContent =
-      "Wind Speed : " + data.list[0].wind.speed + " km/h";
-    realFeelDisplay.textContent =
-      "Real Feel : " + data.list[0].main.feels_like + "°C";
-    humidityDisplay.textContent =
-      "Humidity : " + data.list[0].main.humidity + " %";
-    weatherDescription.textContent = data.list[0].weather[0].description;
-    weatherDescription.style.display = "block";
 
-    // 5 Days forecast cards
-    forecastContainer.innerHTML = ""; // clear previous data
-    const forecastDays = [0, 8, 16, 24, 32];
-    forecastDays.forEach((index) => {
-      const info = data.list[index];
-      const date = new Date(info.dt_txt);
-      const formattedDate = `${date.getDate()}/${date.getMonth() + 1}`;
-      const temp = Math.round(info.main.temp);
-      const minTemp = Math.round(info.main.temp_min);
-      const maxTemp = Math.round(info.main.temp_max);
-      const humidity = info.main.humidity;
-      const icon = info.weather[0].icon;
-      const desc = info.weather[0].description;
-
-      // Create card
-      const card = document.createElement("div");
-      card.classList.add("forecastCard");
-
-      card.innerHTML = `
-    <p class="date">${formattedDate}</p>
-    <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}" />
-    <h3 class="temp">${temp}°C</h3>
-    <p class="range">⬆️ ${maxTemp}°C | ⬇️ ${minTemp}°C</p>
-    <p class="humidity">💧 ${humidity}%</p>
-  `;
-
-      forecastContainer.appendChild(card);
-    });
-    forecastContainer.style.display = "flex";
-
-    // For getting and updating icon
-    weatherIcon.style.display = "block";
-    const iconCode = data.list[0].weather[0].icon;
-    const imageUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    weatherIcon.src = imageUrl;
-  } catch (error) {
-    console.error(error.message);
-    temperature.textContent = "--";
-    windDisplay.textContent = "--";
-    realFeelDisplay.textContent = "--";
-    humidityDisplay.textContent = "--";
-    errorCity.style.display = "block";
-    forecastContainer.style.display = "none";
-    weatherIcon.style.display = "none";
-    weatherDescription.style.display = "none";
-    setTimeout(() => (errorCity.style.display = "none"), 3000);
+    updateUI(data);
+  } catch (err) {
+    showError();
   }
 }
-// Handling form & input
-form.addEventListener("submit", async (e) => {
+
+// Update UI with fetched data
+function updateUI(data) {
+  errorCity.style.display = "none";
+
+  temperature.textContent = Math.round(data.main.temp) + "°C";
+  windDisplay.textContent = "Wind Speed : " + data.wind.speed + " km/h";
+  realFeelDisplay.textContent = "Real Feel : " + data.main.feels_like + "°C";
+  humidityDisplay.textContent = "Humidity : " + data.main.humidity + " %";
+  weatherDescription.textContent = data.weather[0].description;
+  weatherDescription.style.display = "block";
+
+  // icon
+  const iconCode = data.weather[0].icon;
+  weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  weatherIcon.style.display = "block";
+
+  // city
+  currentcity.textContent = data.name;
+
+  // Hide old forecast (no 5-day forecast from this endpoint)
+  forecastContainer.style.display = "none";
+}
+
+// Error UI
+function showError() {
+  temperature.textContent = "--";
+  windDisplay.textContent = "--";
+  realFeelDisplay.textContent = "--";
+  humidityDisplay.textContent = "--";
+
+  weatherIcon.style.display = "none";
+  weatherDescription.style.display = "none";
+
+  errorCity.style.display = "block";
+  setTimeout(() => (errorCity.style.display = "none"), 2500);
+}
+
+// Form Handler
+form.addEventListener("submit", (e) => {
   e.preventDefault();
-  let city = userSearch.value.trim();
-  let formattedCityName =
+  const city = userSearch.value.trim();
+
+  if (!city) return;
+
+  fetchWeather(city);
+
+  currentcity.textContent =
     city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
-  if (city) {
-    fetchWeather(city);
-    currentcity.textContent = formattedCityName;
-    userSearch.value = "";
-  } else return;
+
+  userSearch.value = "";
 });
 
-// Function for getting and updating time
+// Digital Clock
 function showTime() {
-  // Getting time
   let now = new Date();
-  let hour = now.getHours();
-  let minute = now.getMinutes();
-  let seconds = now.getSeconds();
+  let h = now.getHours();
+  let m = now.getMinutes();
+  let s = now.getSeconds();
 
-  // Handling addition of 0 in time is in single digit
-  let hourStr = hour < 10 ? "0" + hour : hour;
-  let minuteStr = minute < 10 ? "0" + minute : minute;
-  let secondsStr = seconds < 10 ? "0" + seconds : seconds;
-
-  // Upating and printing time
-  let time = `${hourStr}:${minuteStr}:${secondsStr}`;
-  timeDisplay.textContent = time;
+  timeDisplay.textContent = 
+    `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
 }
+
 showTime();
 setInterval(showTime, 1000);
