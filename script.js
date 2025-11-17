@@ -29,6 +29,7 @@ async function fetchWeather(city) {
   }
 }
 
+
 // Update UI with fetched data
 function updateUI(data) {
   errorCity.style.display = "none";
